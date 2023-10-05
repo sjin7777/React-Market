@@ -1,38 +1,37 @@
-import { useNavigate, useLocation } from "react-router-dom";
-import ButtonPath from "./ButtonPath";
+import { useNavigate, /* useLocation */ } from "react-router-dom";
+import { Button } from "@mui/material";
 
 function Header() {
     const navigate = useNavigate();
 
-    const location = useLocation();
-    const idVal = (location.state) ? location.state.idVal: "";
-    const handleLogout = () => {
-        if(window.confirm("로그아웃 하시겠습니까?")) {
-            localStorage.removeItem(idVal);
-            navigate("/");
-        }
-    }
+    // const location = useLocation();
+    // const idVal = (location.state) ? location.state.idVal: "";
+    // const handleLogout = () => {
+    //     if(window.confirm("로그아웃 하시겠습니까?")) {
+    //         navigate("/");
+    //     }
+    // }
 
     return(
         <>
-            {(location.state) ? (
+            {/* {(location.state) ? (
                 <header>
-                    <ButtonPath text="Home" onClick={() => navigate("/")} />
+                    <Button onClick={() => navigate("/")} >Home</Button>
                     <nav>
                         <span>{idVal}님</span> 
-                        <ButtonPath text="My Page" onClick={() => navigate("/mypage")} />
-                        <ButtonPath text="Logout" onClick={handleLogout}/>
+                        <Button onClick={() => navigate("/mypage")}>My Page</Button>
+                        <Button onClick={handleLogout}>Logout</Button>
                     </nav>
                 </header>
-            ) : (
+            ) : ( */}
                 <header>
-                    <ButtonPath text="Home" onClick={() => navigate("/")} />
+                    <Button onClick={() => navigate("/")} >Home</Button>
                     <nav>
-                        <ButtonPath text="Join" onClick={() => navigate("/join")} />
-                        <ButtonPath text="Login" onClick={() => navigate("/login")} />
+                        <Button onClick={() => navigate("/join")} >Join</Button>
+                        <Button onClick={() => navigate("/login")} >Login</Button>
                     </nav>
                 </header>
-            )}
+            {/* )} */}
         </>
     )
 }

@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useDispatch } from "react-redux";
+// import { useNavigate } from "react-router-dom";
 import Header from "../items/Header";
-// import TextInput from "../items/TextInput";
-// import ButtonSubmit from "../items/ButtonSubmit";
+import { Button } from "@mui/material";
+import { FormControl } from '@mui/base';
 
 function Join(props) {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
+    // const dispatch = useDispatch();
+
     const [ idVal, setIdVal ] = useState("");
     const [ pwdVal, setPwdVal ] = useState("");
     const [ pwdCkVal, setPwdCkVal ] = useState("");
@@ -31,19 +34,17 @@ function Join(props) {
             setPwdCkVal("");
             return;
         }
-        localStorage.setItem(idVal, pwdVal);
-        navigate("/login");
-        // console.log(idVal);
+
     }
 
     return (
         <div>
             <Header />
             <h1>회원가입</h1>
-            <form onSubmit={handleSubmit}>
+            <FormControl onSubmit={handleSubmit}>
                 <div>
                     <label>아이디</label>
-                    <input value={idVal} onChange={handleChangeId}/>
+                    <input type="text" value={idVal} onChange={handleChangeId}/>
                 </div>
                 <div>
                     <label>패스워드</label>
@@ -53,16 +54,8 @@ function Join(props) {
                     <label>패스워드 확인</label>
                     <input type="password" value={pwdCkVal} onChange={handleChangePwdCk}/>
                 </div>
-                
-                <button>제출</button>
-                {/* 
-                <TextInput text="아이디" ph="아이디를 입력해주세요." />
-                <ButtonSubmit text="중복확인"/> 
-                <TextInput text="이메일" ph="이메일을 입력해주세요." />
-                <TextInput text="패스워드" ph="패스워드를 입력해주세요."/> 
-                <ButtonSubmit text="가입" />
-                */}
-            </form>
+                <Button type="submit">가입</Button>
+            </FormControl>
         </div>
     )
 }

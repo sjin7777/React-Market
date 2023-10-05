@@ -1,6 +1,7 @@
 import Header from "../items/Header";
 
 function MainPage() {
+    
     return(
         <div>
             <Header />
