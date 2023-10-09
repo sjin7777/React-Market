@@ -1,10 +1,10 @@
-import Header from "../items/Header";
+import Header from "../module/Header";
 
-function MainPage() {
+function MainPage({ userId }) {
     
     return(
         <div>
-            <Header />
+            <Header userId={userId} />
         </div>
     )
 }
