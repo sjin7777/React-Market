@@ -1,17 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MainPage from "./components/pages/MainPage";
-import Join from "./components/pages/Join";
-import Login from "./components/pages/Login";
-import MyPage from "./components/pages/MyPage";
+import Main from "./new/pages/Main";
+import Join from "./new/pages/User/Join";
+import Login from "./new/pages/User/Login";
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route index element={<MainPage />}/>
+                <Route index element={<Main />}/>
                 <Route path="join" element={<Join />} />
                 <Route path="login" element={<Login />} />
-                <Route path="mypage" element={<MyPage />} />
             </Routes>
         </BrowserRouter>
     );
