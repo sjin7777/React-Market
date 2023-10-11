@@ -52,6 +52,7 @@ export const UserCk = (userId, userPwd) => ({
 function User(state = initialState, action) {
     switch(action.type) {
         case 'USER_JOIN':
+            console.log(state.userList);
             return {
                 ...state,
                 user: action.user,
@@ -65,10 +66,12 @@ function User(state = initialState, action) {
             }
 
         case 'USER_CK':
+            console.log(state.userList);
             return {
                 ...state,
                 user: action.user,
                 msg: state.userList.map(user => {
+                    state.msg = '';
                     if(user.userId === action.user.userId) {
                         state.msg = (user.userPwd === action.user.userPwd) ? 'success' : 'fail_pwd';
                     } else {

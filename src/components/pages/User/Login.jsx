@@ -4,8 +4,8 @@ import { connect, useDispatch, useSelector, shallowEqual } from "react-redux";
 
 import { UserLogin, UserCk } from "../../data/User";
 import { SetToken } from "../../util/token";
+import { useRef } from "react";
 
-let isToken = false
 const ReduxState = (state) => ({
     user: {
         userId: state.userId,
@@ -34,6 +34,8 @@ const ReduxAction = (dispatch) => ({
 function Login({UserLogin, UserCk, SetToken}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const btn = useRef("");
+    let isCk = false;
     
     const [ userId, setUserId ] = useState("");
     const [ userPwd, setUserPwd ] = useState("");
@@ -41,38 +43,44 @@ function Login({UserLogin, UserCk, SetToken}) {
     const onUserPwdHandler = (e) => setUserPwd(e.target.value);
     
     const storeMsg = useSelector((state) => ({ msg: state.User.msg}), shallowEqual).msg;
-
-    useEffect(() => {
-        UserCk(userId, userPwd);
-        UserLogin(userId, userPwd)
-        SetToken(userId, userPwd, isToken);
-    }, [dispatch])
-
-    
     const msg = String((storeMsg.length === 2) ? storeMsg[1] : storeMsg[0]);
 
-    switch(msg) {
-        case 'success':
-            console.log('로그인');
-            UserLogin(userId, userPwd);
-            SetToken(userId, userPwd, true)
-            navigate('/');
-            break;
-        case 'fail_id':
-            console.log('아이디가 존재하지 않습니다');
-            break;
-        case 'fail_pwd':
-            console.log('패스워드가 일치하지 않습니다');
-            break;
-        default:
-            break;
-    }
-    
     const onUserCk = (e) => {
+        console.log("s")
+        UserCk(userId, userPwd);
+        isCk = true;
         e.preventDefault();
-        UserCk(userId, userPwd) 
-        console.log('@@@!!!!', msg);
     }
+
+    const onClickHandler = (e) => {
+        console.log(isCk)
+        if(userId && userPwd && isCk) {
+            console.log('@@@!!!!', msg);
+            switch(msg) {
+                case 'success':
+                    console.log('로그인');
+                    UserLogin(userId, userPwd);
+                    SetToken(userId, userPwd, true)
+                    navigate('/');
+                    break;
+                case 'fail_id':
+                    console.log('아이디가 존재하지 않습니다');
+                    break;
+                case 'fail_pwd':
+                    console.log('패스워드가 일치하지 않습니다');
+                    break;
+                default:
+                    break;
+            }
+        }
+        isCk = false;
+        // e.preventDefault();
+    } 
+
+    useEffect(() => {
+        onClickHandler()
+    }, [isCk])
+
 
     return (
         <>
@@ -87,7 +95,7 @@ function Login({UserLogin, UserCk, SetToken}) {
                     <input type="password" value={userPwd} onChange={onUserPwdHandler}/>
                 </div>
                 <div>
-                    <button type="submit" >로그인</button>
+                    <button ref={btn} type="submit" onClick={onClickHandler}>로그인</button>
                 </div>
             </form>
         </>

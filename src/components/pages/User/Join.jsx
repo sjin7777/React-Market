@@ -31,7 +31,7 @@ function Join({UserJoin, UserIdCk}) {
     }
     const onClickHandler = (e) => {
         UserJoin(userId, userPwd);
-        navigate('/login', { state: {isToken: false}});
+        navigate('/login');
         e.preventDefault()
     }
 
