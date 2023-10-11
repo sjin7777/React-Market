@@ -1,17 +1,19 @@
 import { legacy_createStore as createStore, combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import User from "../data/User";
 import persistStore from "redux-persist/es/persistStore";
+import User from "../data/User";
+import Token from "./token";
 
 const reducers = combineReducers({
-    User
+    User,
+    Token
 })
 
 const persistConfig =  {
     key: "root",
     storage,
-    whitelist: ["User, UserList", "msg"],
+    whitelist: ["user, userList", "msg", "token", "isToken"],
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)

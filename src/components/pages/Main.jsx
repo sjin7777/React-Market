@@ -1,9 +1,11 @@
-import Header from "../module/Header"
-
+// import { useLocation } from "react-router-dom";
 function Main() {
+    // const {state: {userId, userPwd}} = useLocation();
+    // console.log('userId >> ', userId);
+    // console.log('userPwd >> ', userPwd);
+    
     return (
         <>
-            <Header />
         </>
     )
 }

@@ -1,64 +1,83 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector, shallowEqual } from "react-redux";
 
-import Header from "../../module/Header";
 import { UserLogin, UserCk } from "../../data/User";
+import { SetToken } from "../../util/token";
 
+let isToken = false
 const ReduxState = (state) => ({
     user: {
         userId: state.userId,
         userPwd: state.userPwd
-    }
+    },
+    token: {
+        userId: state.userId,
+        userPwd: state.userPwd,
+    },
+    isToken: state.isToken
 })
 
 const ReduxAction = (dispatch) => ({
+    UserCk: (userId, userPwd) => {
+        dispatch(UserCk(userId, userPwd))
+    },
     UserLogin: (userId, userPwd) => {
         dispatch(UserLogin(userId, userPwd))
     },
-    UserCk: (userId, userPwd) => {
-        dispatch(UserCk(userId, userPwd))
+    SetToken: (userId, userPwd, isToken) => {
+        dispatch(SetToken(userId, userPwd, isToken))
     }
 })
 
-function Login({UserLogin, UserCk}) {
+
+function Login({UserLogin, UserCk, SetToken}) {
     const navigate = useNavigate();
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    
     const [ userId, setUserId ] = useState("");
     const [ userPwd, setUserPwd ] = useState("");
-
     const onUserIdHandler = (e) => setUserId(e.target.value);
     const onUserPwdHandler = (e) => setUserPwd(e.target.value);
+    
+    const storeMsg = useSelector((state) => ({ msg: state.User.msg}), shallowEqual).msg;
 
-    const onSubmitHandler = (e) => {
-        console.log(`userId: ${userId}, userPwd: ${userPwd}`);
-        e.preventDefault();
+    useEffect(() => {
+        UserCk(userId, userPwd);
+        UserLogin(userId, userPwd)
+        SetToken(userId, userPwd, isToken);
+    }, [dispatch])
 
-        switch(UserCk(userId, userPwd)) {
-            case 'success':
-                console.log('로그인');
-                navigate('/');
-                break;
-            case 'fail_id':
-                console.log('아이디가 존재하지 않습니다');
-                return;
-            case 'fail_pwd':
-                    console.log('패스워드가 일치하지 않습니다');
-                return
-            default:
-                break;
-        }
-    }
-    const onClickHandler = () => {
-        UserLogin(userId, userPwd);
+    
+    const msg = String((storeMsg.length === 2) ? storeMsg[1] : storeMsg[0]);
+
+    switch(msg) {
+        case 'success':
+            console.log('로그인');
+            UserLogin(userId, userPwd);
+            SetToken(userId, userPwd, true)
+            navigate('/');
+            break;
+        case 'fail_id':
+            console.log('아이디가 존재하지 않습니다');
+            break;
+        case 'fail_pwd':
+            console.log('패스워드가 일치하지 않습니다');
+            break;
+        default:
+            break;
     }
     
+    const onUserCk = (e) => {
+        e.preventDefault();
+        UserCk(userId, userPwd) 
+        console.log('@@@!!!!', msg);
+    }
 
     return (
         <>
-            <Header />
             <h1>로그인</h1>
-            <form onSubmit={onSubmitHandler}>
+            <form onSubmit={onUserCk} >
                 <div>
                     <label>아이디</label>
                     <input type="text" value={userId} onChange={onUserIdHandler}/>
@@ -68,7 +87,7 @@ function Login({UserLogin, UserCk}) {
                     <input type="password" value={userPwd} onChange={onUserPwdHandler}/>
                 </div>
                 <div>
-                    <button type="submit" onClick={onClickHandler}>로그인</button>
+                    <button type="submit" >로그인</button>
                 </div>
             </form>
         </>

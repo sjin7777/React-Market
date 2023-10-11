@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { connect } from "react-redux";
 
-import Header from "../../module/Header";
 import { UserJoin } from "../../data/User";
 import { useNavigate } from "react-router-dom";
 
@@ -25,9 +24,6 @@ function Join({UserJoin, UserIdCk}) {
 
     const onUserIdHandler = (e) => setUserId(e.target.value);
     const onUserPwdHandler = (e) => setUserPwd(e.target.value);
-    // const onUserIdCkHandler = () => {
-    //     UserIdCk(userId)
-    // }
 
     const onSubmitHandler = (e) => {
         console.log(`userId: ${userId}, userPwd: ${userPwd}`);
@@ -35,15 +31,13 @@ function Join({UserJoin, UserIdCk}) {
     }
     const onClickHandler = (e) => {
         UserJoin(userId, userPwd);
-        // console.log(UserJoin(userId, userPwd));
-        navigate('/login');
+        navigate('/login', { state: {isToken: false}});
         e.preventDefault()
     }
 
     
     return (
         <>
-            <Header />
             <h1>회원가입</h1>
             <form onSubmit={onSubmitHandler}>
                 <div>
