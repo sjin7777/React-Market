@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { connect, useDispatch, useSelector, shallowEqual } from "react-redux";
+import { connect, useSelector, shallowEqual } from "react-redux";
 
 import { UserLogin, UserCk } from "../../data/User";
 import { SetToken } from "../../util/token";
@@ -33,7 +33,6 @@ const ReduxAction = (dispatch) => ({
 
 function Login({UserLogin, UserCk, SetToken}) {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const btn = useRef("");
     let isCk = false;
     
@@ -51,9 +50,10 @@ function Login({UserLogin, UserCk, SetToken}) {
         isCk = true;
         e.preventDefault();
     }
-
+    
     const onClickHandler = (e) => {
-        console.log(isCk)
+        // e.preventDefault();
+        isCk = true;
         if(userId && userPwd && isCk) {
             console.log('@@@!!!!', msg);
             switch(msg) {
@@ -74,12 +74,11 @@ function Login({UserLogin, UserCk, SetToken}) {
             }
         }
         isCk = false;
-        // e.preventDefault();
     } 
 
     useEffect(() => {
         onClickHandler()
-    }, [isCk])
+    }, [msg])
 
 
     return (
