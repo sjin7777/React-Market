@@ -2,8 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { RemoveToken } from "../util/token";
 
-// import User from "../data/User";
-// import styled from "styled-components";
 
 function Header() {
     const dispatch = useDispatch();
@@ -24,7 +22,7 @@ function Header() {
     const onLogoutHandler = () => {
         if(window.confirm('로그아웃 하시겠습니까')) {
             dispatch(RemoveToken(false))
-            navigate("/")
+            navigate("/");
         }
     }
 
@@ -39,6 +37,7 @@ function Header() {
             </nav>
             <nav style={navUser}>
                 <span>{userId}님</span>
+                <button onClick={() => navigate("/user/mypage", {state: {userId}})}>마이페이지</button>
                 <button onClick={onLogoutHandler}>로그아웃</button>
             </nav>
         </>

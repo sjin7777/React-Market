@@ -1,12 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { connect, useSelector, shallowEqual } from "react-redux";
 
-import { UserLogin, UserCk, UserIdCk } from "../../data/User";
+import { UserLogin, UserCk } from "../../data/User";
 import { SetToken } from "../../util/token";
 
-
-let isUserCk = false;
 
 const ReduxState = (state) => ({
     user: {
@@ -33,6 +31,7 @@ const ReduxAction = (dispatch) => ({
 })
 
 
+let isUserCk = false;
 function Login({UserLogin, UserCk, SetToken}) {
     const navigate = useNavigate();
     
@@ -60,19 +59,15 @@ function Login({UserLogin, UserCk, SetToken}) {
             // console.log(userId, ':  storeRes ???????? ', storeRes);
             
             if(storeRes && isUserCk) { 
-                onClickHandler()
+                UserLogin(userId, userPwd);
+                SetToken(userId, userPwd, true);
+                navigate('/');
             } else {
                 console.log('아이디 혹은 패스워드가 일치하지 않습니다');
                 isUserCk = false;
             }
         }
         e.preventDefault();
-    }
-
-    const onClickHandler = () => {
-        UserLogin(userId, userPwd);
-        SetToken(userId, userPwd, true);
-        navigate('/');
     }
 
     return (

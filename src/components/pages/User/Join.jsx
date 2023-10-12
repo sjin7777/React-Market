@@ -27,6 +27,7 @@ function Join({UserJoin, UserIdCk}) {
     const navigate = useNavigate();
     const [ userId, setUserId ] = useState("");
     const [ userPwd, setUserPwd ] = useState("");
+    const [ userPwdCk, setUserPwdCk ] = useState("");
     
     //  state에서 id 중복 확인: true면 중복
     const storeRes = Boolean(useSelector((state) => ({ result: state.User.result}), shallowEqual).result);
@@ -39,6 +40,7 @@ function Join({UserJoin, UserIdCk}) {
     };
     
     const onUserPwdHandler = (e) => setUserPwd(e.target.value);
+    const onUserPwdCkHandler = (e) => setUserPwdCk(e.target.value);
     
     const onUserIdCkHandler = (e) => {
         isIdCk = true;
@@ -57,6 +59,11 @@ function Join({UserJoin, UserIdCk}) {
             console.log('아이디 값을 입력해주세요')
         } else if(!userPwd) {
             console.log('패스워드를 입력해주세요')
+        } else if(!userPwdCk) {
+            console.log('패스워드 확인을 해주세요');
+        } else if(userPwd !== userPwdCk) {
+            console.log('패스워드와 패스워드 확인의 값이 일치하지 않습니다.');
+            setUserPwdCk("");
         } else if(isIdDuplicated) {
             console.log('아이디 체크는 필수입니다')
         } else {
@@ -86,6 +93,10 @@ function Join({UserJoin, UserIdCk}) {
                 <div>
                     <label>패스워드</label>
                     <input type="password" value={userPwd} onChange={onUserPwdHandler}/>
+                </div>
+                <div>
+                    <label>패스워드 확인</label>
+                    <input type="password" value={userPwdCk} onChange={onUserPwdCkHandler}/>
                 </div>
                 <div>
                     <button type="submit" >가입</button>

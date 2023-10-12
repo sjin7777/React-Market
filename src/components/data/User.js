@@ -51,13 +51,16 @@ export const UserCk = (userId, userPwd, result) => ({
     result
 })
 
+
+
+
 function User(state = initialState, action) {
     switch(action.type) {
         case 'USER_JOIN':
             return {
                 ...state,
                 user: action.user,
-                userList: state.userList.concat(action.user),
+                userList: state.userList.concat(action.user)
             }
 
         case 'USER_ID_CK':
@@ -67,18 +70,9 @@ function User(state = initialState, action) {
             }
 
         case 'USER_CK':
-            console.log(state.userList);
-            // let x = (state.userList.findIndex((user) => {
-                // if((user.userId === action.user.userId) && (user.userPwd === action.user.userPwd)) {
-                    // console.log(`11 stateId :::::: ${user.userId},  inputId :::::: ${action.user.userId}`)
-                    // console.log(`22 statePwd :::::: ${user.userPwd},  inputPwd :::::: ${action.user.userPwd}`)
-                    // console.log('333333333 ', (user.userId === action.user.userId) && (user.userPwd === action.user.userPwd))
-                    // }
-                // }))
             return {
                 ...state,
                 result: (state.userList.findIndex((user) => (user.userId === action.user.userId) && (user.userPwd === action.user.userPwd)) > -1)
-                // result: x
             }
 
         case 'USER_LOGIN':
