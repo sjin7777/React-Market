@@ -12,7 +12,7 @@ const initialState = {
         userId: '',
         userPwd: ''
     },
-    msg: ''
+    result: false
 }
 
 let id = 1;
@@ -33,52 +33,52 @@ export const UserLogin = (userId, userPwd) => ({
     }
 })
 
-export const UserIdCk = (userId) => ({
+export const UserIdCk = (userId, result) => ({
     type: 'USER_ID_CK',
     user: {
         userId
-    }
+    },
+    result
 })
 
 
-export const UserCk = (userId, userPwd) => ({
+export const UserCk = (userId, userPwd, result) => ({
     type: 'USER_CK',
     user: {
         userId,
         userPwd
-    }
+    },
+    result
 })
 
 function User(state = initialState, action) {
     switch(action.type) {
         case 'USER_JOIN':
-            console.log(state.userList);
             return {
                 ...state,
                 user: action.user,
                 userList: state.userList.concat(action.user),
-                msg: ''
             }
 
         case 'USER_ID_CK':
             return {
                 ...state,
+                result: (state.userList.findIndex((user) => (user.userId === action.user.userId)) > -1)
             }
 
         case 'USER_CK':
             console.log(state.userList);
+            // let x = (state.userList.findIndex((user) => {
+                // if((user.userId === action.user.userId) && (user.userPwd === action.user.userPwd)) {
+                    // console.log(`11 stateId :::::: ${user.userId},  inputId :::::: ${action.user.userId}`)
+                    // console.log(`22 statePwd :::::: ${user.userPwd},  inputPwd :::::: ${action.user.userPwd}`)
+                    // console.log('333333333 ', (user.userId === action.user.userId) && (user.userPwd === action.user.userPwd))
+                    // }
+                // }))
             return {
                 ...state,
-                user: action.user,
-                msg: state.userList.map(user => {
-                    state.msg = '';
-                    if(user.userId === action.user.userId) {
-                        state.msg = (user.userPwd === action.user.userPwd) ? 'success' : 'fail_pwd';
-                    } else {
-                        state.msg = 'fail_id'
-                    }
-                    return state.msg
-                })
+                result: (state.userList.findIndex((user) => (user.userId === action.user.userId) && (user.userPwd === action.user.userPwd)) > -1)
+                // result: x
             }
 
         case 'USER_LOGIN':
