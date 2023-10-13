@@ -1,11 +1,10 @@
-// import { useLocation } from "react-router-dom";
+import ProductList from "./Products/ProductList";
+
 function Main() {
-    // const {state: {userId, userPwd}} = useLocation();
-    // console.log('userId >> ', userId);
-    // console.log('userPwd >> ', userPwd);
     
     return (
         <>
+            <ProductList />
         </>
     )
 }

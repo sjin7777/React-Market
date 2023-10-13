@@ -56,7 +56,6 @@ function Login({UserLogin, UserCk, SetToken}) {
             console.log('패스워드 값을 입력해주세요');
         } else {
             isUserCk = true;
-            // console.log(userId, ':  storeRes ???????? ', storeRes);
             
             if(storeRes && isUserCk) { 
                 UserLogin(userId, userPwd);

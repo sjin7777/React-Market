@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { connect, shallowEqual, useSelector } from "react-redux";
 
 import { UserIdCk, UserJoin } from "../../data/User";

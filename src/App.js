@@ -7,18 +7,17 @@ import Join from "./components/pages/User/Join";
 import Login from "./components/pages/User/Login";
 import MyPage from "./components/pages/User/MyPage";
 import MyPageInfo from "./components/pages/User/MyPageInfo";
+import ProductDetail from "./components/pages/Products/ProductDetail";
+import Basket from "./components/pages/User/Basket";
 
 
 function App() {
-    const isToken = useSelector((state) => ({ token: state.Token}), shallowEqual).token.isToken;
+    // const isToken = useSelector((state) => ({ token: state.Token}), shallowEqual).token.isToken;
+    // const PrivateRoute = () => {
+    //     (isToken) ? <Navigate to="/"/> : <Outlet /> 
+    // }
 
-    const PrivateRoute = () => {
-        
-        (isToken) ? <Navigate to="/"/> : <Outlet /> 
-    }
-
-    console.log(isToken)
-    
+    // console.log(isToken)
 
     return (
         <BrowserRouter>
@@ -26,6 +25,7 @@ function App() {
             <Routes>
                 {/* 로그인 여부와 상관 없음 */}
                 <Route index element={<Main />}/>
+                <Route path="/product/detail/:productId" element={<ProductDetail />} />
 
                 {/* 로그인 하지 않았을 떄 */}
                 {/* <Route element={<PrivateRoute isToken={false}/>} > */}
@@ -37,6 +37,7 @@ function App() {
                 {/* <Route path={'/user/*'} element={<PrivateRoute isToken={true}/>} > */}
                     <Route path="user/mypage" element={<MyPage />} />
                     <Route path="user/mypageinfo" element={<MyPageInfo />} />
+                    <Route path="user/basket" element={<Basket />} />
                 {/* </Route> */}
             </Routes>
         </BrowserRouter>

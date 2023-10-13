@@ -4,16 +4,19 @@ import storage from "redux-persist/lib/storage";
 import persistStore from "redux-persist/es/persistStore";
 import User from "../data/User";
 import Token from "./token";
+import Product from "../data/Product";
+import Cart from "../data/Cart";
 
 const reducers = combineReducers({
     User,
-    Token
+    Token,
+    Product,
+    Cart
 })
 
 const persistConfig =  {
     key: "root",
     storage,
-    // whitelist: ["user, userList", "result", "token", "isToken"],
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)

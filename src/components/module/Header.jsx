@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { RemoveToken } from "../util/token";
 
@@ -29,7 +29,7 @@ function Header() {
     return (     
         <>
             <header>
-                <button onClick={() => navigate("/")}>Home</button>
+                <Link to="/"><button>Home</button></Link>
             </header>
             <nav style={navGuest}>
                 <button onClick={() => navigate("/join")}>회원가입</button>
@@ -38,6 +38,7 @@ function Header() {
             <nav style={navUser}>
                 <span>{userId}님</span>
                 <button onClick={() => navigate("/user/mypage", {state: {userId}})}>마이페이지</button>
+                <button onClick={() => navigate("/user/basket")}>장바구니</button>
                 <button onClick={onLogoutHandler}>로그아웃</button>
             </nav>
         </>
