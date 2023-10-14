@@ -8,7 +8,7 @@ import Login from "./components/pages/User/Login";
 import MyPage from "./components/pages/User/MyPage";
 import MyPageInfo from "./components/pages/User/MyPageInfo";
 import ProductDetail from "./components/pages/Products/ProductDetail";
-import Basket from "./components/pages/User/Basket";
+import CartList from "./components/pages/User/CartList";
 
 
 function App() {
@@ -37,7 +37,7 @@ function App() {
                 {/* <Route path={'/user/*'} element={<PrivateRoute isToken={true}/>} > */}
                     <Route path="user/mypage" element={<MyPage />} />
                     <Route path="user/mypageinfo" element={<MyPageInfo />} />
-                    <Route path="user/basket" element={<Basket />} />
+                    <Route path="user/cartlist" element={<CartList />} />
                 {/* </Route> */}
             </Routes>
         </BrowserRouter>

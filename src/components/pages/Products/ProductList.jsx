@@ -11,8 +11,8 @@ function ProductList() {
     useEffect(() => {
         fetch(url, {method: "GET"})
             .then((response) => response.json())
-            .then((response) => {
-                setItems(response);
+            .then((data) => {
+                setItems(data);
                 setLoading(false)
             })
             .catch((error) => console.log(error));
