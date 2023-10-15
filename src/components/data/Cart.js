@@ -3,39 +3,42 @@ const initialState = {
     cartList: [
         {
             id: 0,
-            cartId: 0,
+            productId: 0,
+            productCount: 1
         },
     ],
     cart: {
         id: 0,
-        cartId: 0
+        productId: 0,
+        productCount: 1
     },
     result: false
 };
 
 let id = 1;
-export const CartCk = (userId, cartId) => ({
+export const CartCk = (userId, productId) => ({
     type: 'CART_CK',
     userId,
     cart: {
-        cartId
+        productId
     }
 });
 
-export const CartInsert = (userId, cartId) => ({
+export const CartInsert = (userId, productId) => ({
     type: 'CART_INSERT',
     userId,
     cart: {
         id: id++,
-        cartId
+        productId,
+        productCount: 1
     }
 });
 
-export const CartRemove = (userId, cartId) => ({
+export const CartRemove = (userId, productId) => ({
     type: 'CART_REMOVE',
     userId,
     cart: {
-        cartId
+        productId
     }
 });
 
@@ -61,13 +64,13 @@ function Cart(state = initialState, action) {
                 ...state,
                 userId: action.userId,
                 cart: action.cart,
-                result: (state.cartList.findIndex((cart) => (cart.cartId === action.cart.cartId)) > -1) 
+                result: (state.cartList.findIndex((cart) => (cart.productId === action.cart.productId)) > -1) 
             }
         case 'CART_REMOVE':
             return {
                 ...state,
                 userId: action.userId,
-                cartList: (state.cartList.filter((cart) => (cart.cartId !== action.cart.cartId)))
+                cartList: (state.cartList.filter((cart) => (cart.productId !== action.cart.productId)))
             }
         case 'CART_SELECT':
             return {

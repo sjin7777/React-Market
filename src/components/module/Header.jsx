@@ -7,14 +7,15 @@ function Header() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
-    const token = useSelector((state) => ({ token: state.Token }), shallowEqual).token;
+    const storeToken = useSelector((state) => ({ token: state.Token }), shallowEqual).token;
     // console.log("토큰 ::::::::::: ", token);
+
+    let isToken = storeToken.isToken;
+    // console.log("isToken:::::::::: ", isToken)
     
-    let userId = (token.token) ? String(token.token.userId) : "";
+    let userId = (storeToken.token) ? String(storeToken.token.userId) : null;
     // console.log("userId:::::::::: ", userId)
 
-    let isToken = token.isToken;
-    // console.log("isToken:::::::::: ", isToken)
     
     let navGuest = (isToken) ? {display: "none"} : {display: "inline"};
     let navUser = (!isToken) ? {display: "none"}: {display: "inline"};
@@ -38,7 +39,7 @@ function Header() {
             <nav style={navUser}>
                 <span>{userId}님</span>
                 <button onClick={() => navigate("/user/mypage", {state: {userId}})}>마이페이지</button>
-                <button onClick={() => navigate("/user/basket")}>장바구니</button>
+                <button onClick={() => navigate("/user/cartlist")}>장바구니</button>
                 <button onClick={onLogoutHandler}>로그아웃</button>
             </nav>
         </>
