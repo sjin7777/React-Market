@@ -1,8 +1,8 @@
+import { useState, useEffect } from "react";
 import { connect, shallowEqual, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CartCk, CartInsert, CartRemove } from "../../data/Cart";
-import { useEffect } from "react";
-import { useState } from "react";
+
 
 const ReduxState = (state) => ({
     userId: state.userId,
@@ -35,6 +35,7 @@ const ReduxAction = (dispatch) => ({
 function ProductDetail({CartCk, CartInsert, CartRemove}) {
     const navigate = useNavigate();
     const {id, title, price, description, category, image, rating} = useLocation().state.item;
+    // console.log(id)
     const storeRes = useSelector((state) => ({ result: state.Cart.result }), shallowEqual).result;
     const storeToken = useSelector((state) => ({ token: state.Token}), shallowEqual).token;
     
@@ -42,6 +43,8 @@ function ProductDetail({CartCk, CartInsert, CartRemove}) {
     const userId = (isToken) ? storeToken.token.userId : null;
     
     const [ btnText, setBtnText ] = useState((storeRes) ? ("장바구니 삭제") : ("장바구니 추가"));
+
+    // console.log(userId)
 
     useEffect(() => {
         isToken && CartCk(userId, id);

@@ -2,20 +2,19 @@ const initialState = {
     userId: '',
     cartList: [
         {
-            id: 0,
+            cartKey: 0,
             productId: 0,
             productCount: 1
         },
     ],
     cart: {
-        id: 0,
+        cartKey: 0,
         productId: 0,
         productCount: 1
     },
     result: false
 };
 
-let id = 1;
 export const CartCk = (userId, productId) => ({
     type: 'CART_CK',
     userId,
@@ -28,7 +27,6 @@ export const CartInsert = (userId, productId) => ({
     type: 'CART_INSERT',
     userId,
     cart: {
-        id: id++,
         productId,
         productCount: 1
     }
@@ -50,21 +48,21 @@ export const CartSelect = (userId, cartList) => ({
 
 
 function Cart(state = initialState, action) {
-    // console.log(' state.cartList >> ', state.cartList)
+    console.log(' state.cartList >> ', state.cartList)
     switch(action.type) {
         case 'CART_INSERT':
             return {
                 ...state,
                 userId: action.userId,
-                cart: action.cart,
-                cartList: state.cartList.concat(action.cart)
+                cartKey: state.cartKey,
+                cartList: state.cartList.concat(Object.assign({cartKey: state.cartList.length + 1}, action.cart))
             }
         case 'CART_CK':
             return {
                 ...state,
                 userId: action.userId,
-                cart: action.cart,
-                result: (state.cartList.findIndex((cart) => (cart.productId === action.cart.productId)) > -1) 
+                productId: action.cart.productId,
+                // result: (state.cartList.findIndex((cart) => (cart.productId === action.cart.productId)) > -1) 
             }
         case 'CART_REMOVE':
             return {
@@ -73,6 +71,7 @@ function Cart(state = initialState, action) {
                 cartList: (state.cartList.filter((cart) => (cart.productId !== action.cart.productId)))
             }
         case 'CART_SELECT':
+            // console.log(state.userId === action.userId)
             return {
                 ...state,
                 userId: action.userId,

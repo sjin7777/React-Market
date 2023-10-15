@@ -1,25 +1,23 @@
 const initialState = {
     userList: [
         {
-            id:0,
+            userKey: 0,
             userId: 'admin',
             userPwd: '1234',
 
         },
     ],
     user: {
-        id: 0,
+        userKey: 0,
         userId: '',
         userPwd: ''
     },
     result: false
 }
 
-let id = 1;
 export const UserJoin = (userId, userPwd) => ({
     type: 'USER_JOIN',
     user: {
-        id: id++,
         userId,
         userPwd
     }
@@ -55,12 +53,15 @@ export const UserCk = (userId, userPwd, result) => ({
 
 
 function User(state = initialState, action) {
+    console.log(state.userList.length)
     switch(action.type) {
         case 'USER_JOIN':
             return {
                 ...state,
-                user: action.user,
-                userList: state.userList.concat(action.user)
+                userKey: state.userList.length + 1,
+                userId: action.userId,
+                userPwd: action.userPwd,
+                userList: state.userList.concat(Object.assign({userKey: state.userList.length + 1}, action.user))
             }
 
         case 'USER_ID_CK':
