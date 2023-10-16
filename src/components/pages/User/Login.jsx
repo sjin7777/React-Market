@@ -4,6 +4,7 @@ import { connect, useSelector, shallowEqual } from "react-redux";
 
 import { UserLogin, UserCk } from "../../data/User";
 import { SetToken } from "../../util/token";
+import { CartSelect } from "../../data/Cart";
 
 
 const ReduxState = (state) => ({
@@ -27,12 +28,15 @@ const ReduxAction = (dispatch) => ({
     },
     SetToken: (userId, userPwd, isToken) => {
         dispatch(SetToken(userId, userPwd, isToken))
+    },
+    CartSelect: (userId) => {
+        dispatch(CartSelect(userId))
     }
 })
 
 
 let isUserCk = false;
-function Login({UserLogin, UserCk, SetToken}) {
+function Login({UserLogin, UserCk, SetToken, CartSelect}) {
     const navigate = useNavigate();
     
     const storeRes = Boolean(useSelector((state) => ({ result: state.User.result }), shallowEqual).result);
@@ -60,6 +64,7 @@ function Login({UserLogin, UserCk, SetToken}) {
             if(storeRes && isUserCk) { 
                 UserLogin(userId, userPwd);
                 SetToken(userId, userPwd, true);
+                CartSelect(userId);
                 navigate('/');
             } else {
                 console.log('아이디 혹은 패스워드가 일치하지 않습니다');

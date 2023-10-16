@@ -1,5 +1,5 @@
 import { connect, shallowEqual, useSelector } from "react-redux";
-import { CartSelect, CartProductCount, CartProductCountIncrement, CartProductCountDecrement, CartProductCountModify } from "../../data/Cart";
+import { CartProductCountIncrement, CartProductCountDecrement } from "../../data/Cart";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
 
@@ -15,25 +15,16 @@ const ReduxState = (state) => ({
 });
 
 const ReduxAction = (dispatch) => ({
-    // CartSelect: (userId, cartList) => {
-    //     dispatch(CartSelect(userId, cartList))
-    // },
-    // CartProductCount: (prodcutId) => {
-    //     dispatch(CartProductCount(prodcutId))
-    // },
     CartProductCountIncrement: (productId, productCount) => {
         dispatch(CartProductCountIncrement(productId, productCount))
     },
     CartProductCountDecrement: (productId, productCount) => {
         dispatch(CartProductCountDecrement(productId, productCount))
-    },
-    CartProductCountModify: (productId, productCount) => {
-        dispatch(CartProductCountModify(productId, productCount))
     }
 
 })
 
-function CartList({CartProductCountIncrement, CartProductCountDecrement, CartProductCountModify}) {
+function CartList({CartProductCountIncrement, CartProductCountDecrement}) {
     const isChecked = useRef();
     const isCounter = useRef();
 
@@ -53,30 +44,33 @@ function CartList({CartProductCountIncrement, CartProductCountDecrement, CartPro
             dataArr = dataArr.map((data) => Object.assign(data, storeCartList.find((storeCart) => storeCart.productId === data.id)))
             setItems(dataArr)
         })
-    }, [setItems, storeCartList, storeUserId, isCounter])
+    }, [setItems, storeCartList, storeUserId, isCounter, CartProductCountIncrement, CartProductCountDecrement])
+
+
     
     const onDecrement = (id, storeCnt, cnt) => {
-        setCounter(cnt - 1);
-        console.log('id >>>>>>>> ', id, ', storeCnt >>>>>>>>> ', storeCnt, ',     cnt >>>>>>>> ', cnt, );
+        setCounter((prev) => prev - 1);
+        // (isCounter.current) = (isCounter.current) && Number(isCounter.current.value) - 1
+        
         CartProductCountDecrement(id, storeCnt + cnt)
+        console.log('id >>>>>>>> ', id, ', storeCnt >>>>>>>>> ', storeCnt, ',     cnt >>>>>>>> ', cnt, );
     }
     
     const onIncrement = (id, storeCnt, cnt) => {
-        console.log('id >>>>>>>> ', id, ', storeCnt >>>>>>>>> ', storeCnt, ',     cnt >>>>>>>> ', cnt, );
-        setCounter(cnt + 1);
+        setCounter((prev) => prev + 1);
+        
         CartProductCountIncrement(id, storeCnt + cnt);
+        console.log('id >>>>>>>> ', id, ', storeCnt >>>>>>>>> ', storeCnt, ',     cnt >>>>>>>> ', cnt, );
     }
 
     
-    const onChangeHandler = (e) => {
-        CartProductCountIncrement()
-        CartProductCountDecrement()
-        // setCounter(item.productCount)
-        // setCounter(e.current.value)
-        // console.log(e.target.value)
-        // number.value = counterValue;
+    const onChangeHandler = (id, storeCnt, cnt) => {
+        onIncrement(id, storeCnt, cnt);
+        onDecrement(id, storeCnt, cnt);
     }
 
+    
+    console.log((isCounter.current) ? Number(isCounter.current.value) : null)
 
 
 
@@ -103,10 +97,10 @@ function CartList({CartProductCountIncrement, CartProductCountDecrement, CartPro
                         <span>가격: {item.price}</span>
                         {/* <button onClick={() => CartProductCountDecrement(item.id, Number(item.productCount))}>-</button> */}
                         <button onClick={() => onDecrement(item.id, item.productCount, counter)}>-</button>
-                        <input type="number" ref={isCounter} value={item.productCount + counter} onChange={onChangeHandler} style={{width: "50px"}}/>
+                        <input type="number" ref={isCounter} value={item.productCount + counter} onChange={() => onChangeHandler(item.id, item.productCount, counter)} style={{width: "50px"}}/>
                         <button onClick={() => onIncrement(item.id, item.productCount, counter)}>+</button>
                         {/* <button onClick={() => CartProductCountIncrement(item.id, Number(item.productCount))}>+</button> */}
-                        <button>변경하기</button>
+
                     </div>
                 </div>
             ))}

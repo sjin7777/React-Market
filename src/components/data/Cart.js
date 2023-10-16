@@ -2,15 +2,15 @@ const initialState = {
     userId: 'admin',
     cartList: [
         {
-            cartKey: 0,
-            productId: 0,
+            cartKey: 1,
+            productId: 1,
             productCount: 1
         },
     ],
     cart: {
         cartKey: 0,
         productId: 0,
-        productCount: 1
+        productCount: 0
     },
     result: false
 };
@@ -46,18 +46,12 @@ export const CartSelect = (userId, cartList) => ({
     cartList
 });
 
-export const CartProductCount = (productId) => ({
-    type: 'CART_PRODUCT_COUNT',
-    cart: {
-        productId
-    }
-});
 
 export const CartProductCountIncrement = (productId, productCount) => ({
     type: 'CART_PRODUCT_COUNT_INCREMENT',
     cart: {
         productId,
-        productCount: Number(productCount) + 1
+        productCount: Number(productCount)
     }
 });
 
@@ -66,20 +60,13 @@ export const CartProductCountDecrement = (productId, productCount) => ({
     type: 'CART_PRODUCT_COUNT_DECREMENT',
     cart: {
         productId,
-        productCount: Number(productCount) - 1
+        productCount: Number(productCount)
     }
 });
 
-export const CartProductCountModify = (productId, productCount) => ({
-    type: 'CART_PRODUCT_COUNT_MODIFY',
-    cart: {
-        productId,
-        productCount
-    }
-})
-
 
 function Cart(state = initialState, action) {
+
     switch(action.type) {
         case 'CART_INSERT':
             return {
@@ -105,39 +92,37 @@ function Cart(state = initialState, action) {
             return {
                 ...state,
                 userId: action.userId,
-                cartList: state.cartList,
+                cartList: state.cartList.filter(() => (state.userId === action.userId)),
             }
         case 'CART_PRODUCT_COUNT_INCREMENT':
+            // const currentCartCk1 = state.cartList.filter((cart) => (cart.productId === action.cart.productId));
             console.log('%%%%%%%%%%%%%%%111 ', state.cart.productCount)
             console.log('%%%%%%%%%%%%%%%222 ', action.cart.productCount)
             return {
                 ...state,
                 productId: action.cart.productId,
-                productCount: (action.cart.productCount)
+                productCount: (state.cart.productCount) + 1,
+                // cartList: currentCartCk1.map((cart) => (cart.productCount = action.cart.productCount))
             }
         
         case 'CART_PRODUCT_COUNT_DECREMENT':
-            console.log('%%%%%%%%%%%%%%% ', (action.cart.productCount))
-            
+            console.log('%%%%%%%%%%%%%%%111 ', state.cart.productCount)
+            console.log('%%%%%%%%%%%%%%%222 ', action.cart.productCount)
+
+            // const currentCartCk = state.cartList.filter((cart) => (cart.productId === action.cart.productId));
+
+            // let b = currentCartCk.map((cart) => (cart.productCount = action.cart.productCount))
+
+            // console.log('bbbbbbbbbbbbbbbb', b)
+            // console.log(b)
             return {
                 ...state,
                 productId: action.cart.productId,
-                productCount: (action.cart.productCount)
+                productCount: (state.cart.productCount) - 1,
+                // cartList: currentCartCk.map((cart) => (cart.productCount = action.cart.productCount))
+                // cartList: state.cartList.filter((cart) => (cart.id === action.cart.id)).map((cart) => (cart.productCount = action.cart.productCount))
             }
 
-        case 'CART_PRODUCT_COUNT':
-            return {
-                ...state,
-                productId: action.cart.productId,
-                productCount: action.cart.productCount
-            }
-        
-        case 'CART_PRODUCT_COUNT_MODIFY':
-            return {
-                ...state,
-                cart: action.cart,
-                cartList: state.cartList.filter((cart) => (cart.id === action.cart.id)).map((cart) => (cart.productCount = action.cart.productCount))
-            }
         default:
             return state;
     }
