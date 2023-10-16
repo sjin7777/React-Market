@@ -1,49 +1,81 @@
 const initialState = {
-    userId: 'admin',
     cartList: [
-        {
-            cartKey: 1,
-            productId: 1,
-            productCount: 1
-        },
+        [
+            {
+                userId: 'admin'
+            },
+            {
+                cartKey: 1,
+                productId: 1,
+                productCount: 1
+            },
+        ]
     ],
-    cart: {
-        cartKey: 0,
-        productId: 0,
-        productCount: 0
-    },
+
+    cart: [
+        {
+            userId: 'admin'
+        },
+        {
+            cartKey: 0,
+            productId: 0,
+            productCount: 0
+        }
+    ],
     result: false
 };
 
+
+export const CartInit = (userId) => ({
+    type: 'CART_INIT',
+    cart: [
+        {
+            userId
+        }
+    ]
+})
 export const CartCk = (userId, productId) => ({
     type: 'CART_CK',
-    userId,
-    cart: {
-        productId
-    }
-});
-
+    cart: [
+        {
+            userId
+        },
+        {
+            productId
+        }
+    ]
+})
 export const CartInsert = (userId, productId) => ({
     type: 'CART_INSERT',
-    userId,
-    cart: {
-        productId,
-        productCount: 1
-    }
+    cart: [
+        {
+            userId
+        },
+        {
+            productId
+        }
+    ]
 });
 
 export const CartRemove = (userId, productId) => ({
     type: 'CART_REMOVE',
-    userId,
-    cart: {
-        productId
-    }
+    cart: [
+        {
+            userId
+        },
+        {
+            productId
+        }
+    ]
 });
 
-export const CartSelect = (userId, cartList) => ({
+export const CartSelect = (userId) => ({
     type: 'CART_SELECT',
-    userId,
-    cartList
+    cart: [
+        {
+            userId
+        }
+    ]
 });
 
 
@@ -67,32 +99,58 @@ export const CartProductCountDecrement = (productId, productCount) => ({
 
 function Cart(state = initialState, action) {
 
+
     switch(action.type) {
+        case 'CART_INIT':
+            // console.log('>>>>>>>>>> ', state.cartList.concat([[{userId: action.cart[0].userId}]]))
+            return {
+                ...state,
+                cart: [
+                    {
+                        userId: action.cart[0].userId
+                    }
+                ],
+                cartList: state.cartList.concat([[{userId: action.cart[0].userId}]])
+            }
         case 'CART_INSERT':
+            let storeUserCart = state.cartList.filter((cart) => cart = cart[0].userId === action.cart[0].userId);
+            // storeUserCart[0].push({cartKey: storeUserCart[0].length, productId: action.cart[1].productId, productCount: 1});
+            state.cartList.map((cart) => (cart[0].userId === action.cart[0].userId) && cart.push({cartKey: storeUserCart[0].length, productId: action.cart[1].productId, productCount: 1}))
+            // console.log('111111111111111111111111   ', state.cartList)
+
             return {
                 ...state,
                 userId: action.userId,
-                cartKey: state.cartKey,
-                cartList: state.cartList.concat(Object.assign({cartKey: state.cartList.length + 1}, action.cart))
+                cart: storeUserCart,
+                cartList: state.cartList
             }
         case 'CART_CK':
+            let a = state.cartList.filter((cart) => cart = cart[0].userId === action.cart[0].userId);
+            console.log('a >>>>>> ',a);
+            console.log('len >> ', a[0].length)
+            // let b = a.findIndex((item) => {
+            // });
+            // console.log('b >>>>>>>> ',b)
+
+            // console.log('id>>>>>>>>>>', stateUserCart.findIndex((cart) =>  (cart.productId === action.cart.productId)) > -1)
             return {
                 ...state,
                 userId: action.userId,
                 productId: action.cart.productId,
-                result: (state.cartList.findIndex((cart) => (cart.productId === action.cart.productId)) > -1) 
+                // result: ((state.cartList.findIndex((cart) => (cart.productId === action.cart.productId)) > -1)) 
             }
         case 'CART_REMOVE':
             return {
-                ...state,
-                userId: action.userId,
-                cartList: (state.cartList.filter((cart) => (cart.productId !== action.cart.productId)))
+                // ...state,
+                // userId: action.userId,
+                // cartList: (state.cartList.filter((cart) => (cart.productId !== action.cart.productId)))
             }
         case 'CART_SELECT':
             return {
                 ...state,
-                userId: action.userId,
-                cartList: state.cartList.filter(() => (state.userId === action.userId)),
+                userId: action.cart[0].userId,
+                cart: state.cartList.filter((cart) => cart[0].userId === action.cart[0].userId ),
+                cartList: state.cartList
             }
         case 'CART_PRODUCT_COUNT_INCREMENT':
             // const currentCartCk1 = state.cartList.filter((cart) => (cart.productId === action.cart.productId));

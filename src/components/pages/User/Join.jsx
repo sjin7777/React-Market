@@ -3,6 +3,7 @@ import { connect, shallowEqual, useSelector } from "react-redux";
 
 import { UserIdCk, UserJoin } from "../../data/User";
 import { useNavigate } from "react-router-dom";
+import { CartInit } from "../../data/Cart";
 
 let isIdCk = false;
 
@@ -10,7 +11,12 @@ const ReduxState = (state) => ({
     user: {
         userId: state.userId,
         userPwd: state.userPwd
-    }
+    },
+    cart: [
+        {
+            userId: state.userId
+        }
+    ]
 })
 
 const ReduxAction = (dispatch) => ({
@@ -19,11 +25,14 @@ const ReduxAction = (dispatch) => ({
     },
     UserIdCk: (userId) => {
         dispatch(UserIdCk(userId))
+    },
+    CartInit: (userId) => {
+        dispatch(CartInit(userId))
     }
 })
 
 
-function Join({UserJoin, UserIdCk}) {
+function Join({UserJoin, UserIdCk, CartInit}) {
     const navigate = useNavigate();
     const [ userId, setUserId ] = useState("");
     const [ userPwd, setUserPwd ] = useState("");
@@ -75,6 +84,7 @@ function Join({UserJoin, UserIdCk}) {
     
     const onClickHandler = () => {
         UserJoin(userId, userPwd);
+        CartInit(userId)
         navigate('/login');
     }
 

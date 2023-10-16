@@ -5,15 +5,14 @@ import { CartCk, CartInsert, CartRemove } from "../../data/Cart";
 
 
 const ReduxState = (state) => ({
-    userId: state.userId,
-    cartList: [
+    cart: [
+        {
+            userId: state.userId
+        },
         {
             productId: state.productId
         }
-    ],
-    cart: {
-        productId: state.productId
-    }
+    ]
 })
 
 

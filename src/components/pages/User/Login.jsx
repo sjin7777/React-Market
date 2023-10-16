@@ -16,7 +16,12 @@ const ReduxState = (state) => ({
         userId: state.userId,
         userPwd: state.userPwd,
     },
-    isToken: state.isToken
+    isToken: state.isToken,
+    cart: [
+        {
+            userId: state.userId
+        }
+    ]
 })
 
 const ReduxAction = (dispatch) => ({
