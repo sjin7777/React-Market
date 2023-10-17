@@ -29,7 +29,8 @@ function CartList({CartProductCountIncrement, CartProductCountDecrement}) {
     // const isCounter = useRef();
 
     const storeUserId = useSelector((state) => ({ token: state.Token }), shallowEqual).token.token.userId;
-    // const storeCart = useSelector((state) => ({ cart: state.Cart }), shallowEqual).cart;
+    const storeCart = useSelector((state) => ({ cart: state.Cart }), shallowEqual).cart;
+    console.log(storeCart.cartList)
     // const storeCartList = Array.isArray(storeCart.cartList) ? (storeCart.cartList) : null;
     // console.log(storeCartList.some((cart) => (cart[0].userId === storeUserId)));
     // console.log(storeCartList[0][0].userId)
